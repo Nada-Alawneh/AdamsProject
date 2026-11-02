@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المكونات المادية للحاسوب | آدم القرعان</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-light: #f4f7fe;
+            --white: #ffffff;
+            --primary: #4318ff;
+            --secondary: #01b574;
+            --accent: #ff8d72;
+            --text-main: #2b3674;
+            --text-muted: #707eaf;
+            --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: relative;
+            min-height: 65vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+            padding: 20px;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(3px);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255,255,255,1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .hero-content .student-info {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .hero-content .teacher-info {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -30px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-header {
+            text-align: center;
+            margin: 70px 0 40px;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: 0.8s ease;
+        }
+        
+        .section-header.visible { transform: translateY(0); opacity: 1; }
+        .section-header h2 { font-size: 2.6rem; color: var(--text-main); display: inline-block; position: relative; margin-bottom: 10px; }
+        .section-header h2 i { color: var(--primary); margin-left: 10px; }
+        .section-header p { color: var(--text-muted); font-size: 1.2rem; margin-top: 5px; }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s ease;
+            position: relative;
+            flex: 1 1 280px;
+            max-width: 350px;
+            box-sizing: border-box;
+            border: 1px solid transparent;
+            transform: translateY(40px);
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .card.visible { transform: translateY(0); opacity: 1; }
+
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0px 30px 50px rgba(112, 144, 176, 0.2);
+            border-color: #e2e8f0;
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            background: var(--bg-light);
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-img-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 12px; color: var(--text-main); }
+        .card p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin: 0; padding: 0 10px 10px; }
+
+        .integration-section {
+            background: linear-gradient(135deg, #4318ff, #8b5cf6);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+            box-shadow: 0 20px 40px rgba(67, 24, 255, 0.2);
+            transform: translateY(40px);
+            opacity: 0;
+            transition: 0.8s ease;
+        }
+        .integration-section.visible { transform: translateY(0); opacity: 1; }
+        .integration-section h2 { font-size: 2.2rem; margin-bottom: 20px; }
+        .integration-section p { font-size: 1.3rem; line-height: 1.8; opacity: 0.9; margin-bottom: 30px; }
+        .flow-diagram { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; font-size: 1.2rem; font-weight: bold; }
+        .flow-step { background: rgba(255,255,255,0.2); padding: 15px 25px; border-radius: 15px; backdrop-filter: blur(5px); }
+        .flow-arrow { font-size: 1.5rem; color: #ff8d72; }
+
+        /* اللعبة */
+        .game-section {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            margin-top: 70px;
+            border: 2px dashed #d3d9e8;
+            min-height: 400px;
+        }
+
+        .btn-start-game {
+            background: linear-gradient(45deg, #ff8d72, #ff5b5b);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 141, 114, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-start-game:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(255, 141, 114, 0.5);
+        }
+
+        .score-board { font-size: 1.5rem; color: var(--primary); font-weight: bold; background: #f4f7fe; display: inline-block; padding: 10px 30px; border-radius: 20px; margin-bottom: 20px; }
+        
+        .game-item { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            color: var(--text-main); 
+            margin: 20px auto 30px; 
+            padding: 25px; 
+            background: linear-gradient(135deg, rgba(67,24,255,0.05), rgba(1,181,116,0.05)); 
+            border-radius: 20px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            min-width: 250px; 
+            max-width: 400px;
+            border: 1px solid #e2e8f0; 
+        }
+
+        .game-item img {
+            width: 100%;
+            max-width: 250px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none; 
+        }
+
+        .game-buttons button { border: none; padding: 15px 25px; font-size: 1.1rem; font-family: inherit; font-weight: bold; border-radius: 15px; cursor: pointer; margin: 8px; transition: 0.3s; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .btn-in { background: #3b82f6; } .btn-in:hover { background: #2563eb; transform: translateY(-5px); }
+        .btn-int { background: #8b5cf6; } .btn-int:hover { background: #7c3aed; transform: translateY(-5px); }
+        .btn-out { background: #10b981; } .btn-out:hover { background: #059669; transform: translateY(-5px); }
+        #game-feedback { font-size: 1.4rem; margin-top: 20px; font-weight: bold; height: 35px; }
+
+        @media (max-width: 768px) {
+            .hero-content { padding: 30px 20px; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-content .student-info { font-size: 1.2rem; }
+            header { min-height: 50vh; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+            .section-header h2 { font-size: 2rem; }
+            .card { max-width: 100%; flex: 1 1 100%; }
+            .game-item { font-size: 1.4rem; min-width: 90%; padding: 20px; }
+            .game-buttons button { width: 100%; margin: 8px 0; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <video autoplay loop muted playsinline class="hero-video">
+            <source src="hero-bg.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+        
+        <div class="hero-content">
+            <h1>المكونات المادية للحاسوب</h1>
+            <p class="student-info"><i class="fas fa-graduation-cap"></i> الطالب: آدم عمر القرعان | الصف السابع | شعبة: الحسين</p>
+            <p class="teacher-info">إشراف المعلم: أ. أيمن ملحم</p>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="section-header scroll-anim">
+            <h2><i class="fas fa-microchip"></i> المكونات الداخلية</h2>
+            <p>توجد داخل وحدة النظام وتعمل بتناغم لتشغيل الجهاز</p>
+        </div>
+        
+        <div class="cards-container">
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-server"></i></div>
+                    <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=600&q=80" alt="هيكل الحاسوب">
+                </div>
+                <h3>هيكل الحاسوب</h3>
+                <p>هيكل معدني يحوي اللوحة الأم والقرص الصلب ومزود الطاقة.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-brain"></i></div>
+                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80" alt="المعالج CPU">
+                </div>
+                <h3>المعالج (CPU)</h3>
+                <p>دماغ الحاسوب؛ ينفذ العمليات الحسابية والمنطقية وأوامر النظام.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-chess-board"></i></div>
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" alt="اللوحة الأم">
+                </div>
+                <h3>اللوحة الأم</h3>
+                <p>الأساس الذي تُثبت عليه المكونات الداخلية وتربطها معاً.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-memory"></i></div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNtFZ_O_kO17td4C5IjXaehwC1QEI0uZDxXrw2vZS-dERSvzQKcA_pJKPq&s=10" alt="الذاكرة RAM">
+                </div>
+                <h3>الذاكرة (RAM/ROM)</h3>
+                <p>تخزين مؤقت لتسريع الأداء (RAM)، ودائم لقراءة النظام (ROM).</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-hard-drive"></i></div>
+                    <img src="https://images.unsplash.com/photo-1531492746076-161ca9bcad58?auto=format&fit=crop&w=600&q=80" alt="القرص الصلب">
+                </div>
+                <h3>القرص الصلب</h3>
+                <p>وحدة التخزين طويلة المدى التي تُحفظ فيها البيانات.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-plug"></i></div>
+                    <img src="https://arabhardware.net/wp-content/uploads/2016/12/0bacb8ed-c1d9-40bb-9efb-6324b097b83f.jpg" alt="مزود الطاقة">
+                </div>
+                <h3>مزود الطاقة</h3>
+                <p>يوفر الطاقة الكهربائية ويغذي الأجزاء الداخلية للحاسوب.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-vr-cardboard"></i></div>
+                    <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=600&q=80" alt="GPU">
+                </div>
+                <h3>بطاقة معالجة الرسوم</h3>
+                <p>معالجة وعرض الصور ومقاطع الفيديو على الشاشة بوضوح عالي.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #4318ff;"><i class="fas fa-fan"></i></div>
+                    <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=600&q=80" alt="مروحة التبريد">
+                </div>
+                <h3>مروحة التبريد</h3>
+                <p>تبرد المكونات لمنع ارتفاع الحرارة وحماية الجهاز.</p>
+            </div>
+        </div>
+
+        <div class="section-header scroll-anim">
+            <h2><i class="fas fa-keyboard"></i> وحدات الإدخال</h2>
+            <p>تُستعمل لإدخال الأوامر والبيانات إلى الحاسوب</p>
+        </div>
+        
+        <div class="cards-container">
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #3b82f6;"><i class="fas fa-keyboard"></i></div>
+                    <img src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=600&q=80" alt="لوحة المفاتيح">
+                </div>
+                <h3>لوحة المفاتيح</h3>
+                <p>إدخال النصوص والأوامر لجهاز الحاسوب.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #3b82f6;"><i class="fas fa-computer-mouse"></i></div>
+                    <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80" alt="الفأرة">
+                </div>
+                <h3>الفأرة</h3>
+                <p>التفاعل مع الواجهات الرسومية بسلاسة.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #3b82f6;"><i class="fas fa-print"></i></div>
+                    <img src="https://static.labeb.com/images/articles/wm/29_02_2016/53__29_02_2016_17_25_32_16-w1920.jpg" alt="الماسح الضوئي">
+                </div>
+                <h3>الماسح الضوئي</h3>
+                <p>تحويل الوثائق الورقية إلى صور رقمية.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #3b82f6;"><i class="fas fa-microphone"></i></div>
+                    <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" alt="الميكروفون">
+                </div>
+                <h3>الميكروفون</h3>
+                <p>إدخال الصوت وإجراء المكالمات الصوتية والمرئية.</p>
+            </div>
+        </div>
+
+        <div class="section-header scroll-anim">
+            <h2><i class="fas fa-desktop"></i> وحدات الإخراج</h2>
+            <p>تُستعمل لعرض نتائج المعالجة للمستخدم</p>
+        </div>
+        
+        <div class="cards-container">
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #10b981;"><i class="fas fa-display"></i></div>
+                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80" alt="الشاشة">
+                </div>
+                <h3>الشاشة (Monitor)</h3>
+                <p>عرض المعلومات بصورة مرئية للمستخدم.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #10b981;"><i class="fas fa-print"></i></div>
+                    <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80" alt="الطابعة">
+                </div>
+                <h3>الطابعة (Printer)</h3>
+                <p>طباعة الوثائق والصور والمعلومات على الورق.</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #10b981;"><i class="fas fa-headphones"></i></div>
+                    <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80" alt="السماعات">
+                </div>
+                <h3>السماعات</h3>
+                <p>إخراج الصوت الناتج من جهاز الحاسوب.</p>
+            </div>
+        </div>
+
+        <div class="section-header scroll-anim">
+            <h2><i class="fas fa-laptop-code"></i> أجهزة حديثة أخرى</h2>
+            <p>أمثلة إضافية على وحدات الإدخال والإخراج المتطورة</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #ff8d72;"><i class="fas fa-hand-pointer"></i></div>
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80" alt="شاشة اللمس">
+                </div>
+                <h3>شاشة اللمس</h3>
+                <p>تعتبر وحدة إدخال وإخراج في نفس الوقت (Touch screen).</p>
+            </div>
+            <div class="card scroll-anim">
+                <div class="card-img-wrapper">
+                    <div class="card-badge" style="color: #ff8d72;"><i class="fas fa-glasses"></i></div>
+                    <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80" alt="الواقع الافتراضي">
+                </div>
+                <h3>الواقع الافتراضي</h3>
+                <p>توفر تجربة تفاعلية ثلاثية الأبعاد (VR Glasses).</p>
+            </div>
+        </div>
+
+        <!-- التكامل الوظيفي -->
+        <div class="integration-section scroll-anim">
+            <h2><i class="fas fa-sync-alt"></i> التكامل الوظيفي</h2>
+            <p>يُعد التكامل الوظيفي بين الأجزاء الداخلية والخارجية مهماً لعمل الحاسوب بفاعلية. فإن جميع المكونات تعمل معاً بانسجام وتناغم لأداء المهام المطلوبة.</p>
+            <div class="flow-diagram">
+                <div class="flow-step">1. إدخال (لوحة المفاتيح)</div>
+                <i class="fas fa-arrow-left flow-arrow"></i>
+                <div class="flow-step">2. معالجة (CPU)</div>
+                <i class="fas fa-arrow-left flow-arrow"></i>
+                <div class="flow-step">3. تخزين (RAM)</div>
+                <i class="fas fa-arrow-left flow-arrow"></i>
+                <div class="flow-step">4. إخراج (الشاشة)</div>
+            </div>
+        </div>
+
+        <!-- اللعبة -->
+        <div class="game-section scroll-anim" id="game-container">
+            <h2>🎮 اختبر معلوماتك مع آدم 🎮</h2>
+            
+            <!-- شاشة البداية -->
+            <div id="game-start-screen">
+                <p style="font-size: 1.6rem; color: var(--text-main); margin-bottom: 25px;">هل أنت مستعد لبدء تحدي المكونات المادية؟</p>
+                <button class="btn-start-game" onclick="startGame()">🚀 ابدأ التحدي الآن!</button>
+            </div>
+
+            <!-- واجهة اللعبة -->
+            <div id="game-interface" style="display: none;">
+                <div class="score-board">النقاط: <span id="score-display">0</span> / 12</div>
+                <br>
+                <div class="game-item" id="game-item-box">
+                    <img id="game-item-img" src="" alt="صورة القطعة">
+                    <div id="game-item-text">جاري التحميل...</div>
+                </div>
+                
+                <div class="game-buttons" id="game-buttons">
+                    <button class="btn-in" onclick="playGame('إدخال')">📥 وحدة إدخال</button>
+                    <button class="btn-int" onclick="playGame('داخلية')">⚙️ مكون داخلي</button>
+                    <button class="btn-out" onclick="playGame('إخراج')">📤 وحدة إخراج</button>
+                </div>
+                <div id="game-feedback"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-anim').forEach((el) => observer.observe(el));
+
+        // الروابط المحدثة المطلوبة في اللعبة أيضاً
+        const questions = [
+            { text: "الفأرة (Mouse) 🖱️", answer: "إدخال", img: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80" },
+            { text: "اللوحة الأم (Motherboard) 🧩", answer: "داخلية", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" },
+            { text: "الشاشة (Monitor) 🖥️", answer: "إخراج", img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80" },
+            { text: "الماسح الضوئي (Scanner) 🖨️", answer: "إدخال", img: "https://static.labeb.com/images/articles/wm/29_02_2016/53__29_02_2016_17_25_32_16-w1920.jpg" },
+            { text: "المعالج (CPU) 🧠", answer: "داخلية", img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80" },
+            { text: "السماعات (Speakers) 🎧", answer: "إخراج", img: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80" },
+            { text: "القرص الصلب (HDD) 💾", answer: "داخلية", img: "https://images.unsplash.com/photo-1531492746076-161ca9bcad58?auto=format&fit=crop&w=600&q=80" },
+            { text: "لوحة المفاتيح (Keyboard) ⌨️", answer: "إدخال", img: "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=600&q=80" },
+            { text: "بطاقة معالجة الرسوم (GPU) 🖼️", answer: "داخلية", img: "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=600&q=80" },
+            { text: "الطابعة (Printer) 🖨️", answer: "إخراج", img: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80" },
+            { text: "مزود الطاقة (Power Supply) 🔌", answer: "داخلية", img: "https://arabhardware.net/wp-content/uploads/2016/12/0bacb8ed-c1d9-40bb-9efb-6324b097b83f.jpg" },
+            { text: "الميكروفون (Microphone) 🎤", answer: "إدخال", img: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        const textEl = document.getElementById("game-item-text");
+        const imgEl = document.getElementById("game-item-img");
+        const feedbackEl = document.getElementById("game-feedback");
+        const buttonsEl = document.getElementById("game-buttons");
+        const scoreEl = document.getElementById("score-display");
+        const startScreen = document.getElementById("game-start-screen");
+        const interfaceScreen = document.getElementById("game-interface");
+
+        function triggerConfetti() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#4318ff', '#01b574', '#ff8d72'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#4318ff', '#01b574', '#ff8d72'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function startGame() {
+            startScreen.style.display = "none";
+            interfaceScreen.style.display = "block";
+            loadQ();
+        }
+
+        function loadQ() {
+            if(currentQ < questions.length) {
+                textEl.textContent = questions[currentQ].text;
+                imgEl.src = questions[currentQ].img;
+                imgEl.style.display = "block";
+                
+                textEl.style.transform = "scale(0.9)";
+                setTimeout(() => textEl.style.transform = "scale(1)", 150);
+                feedbackEl.textContent = "";
+            } else {
+                imgEl.style.display = "none"; 
+                textEl.textContent = "🏆 بطل الحاسوب! 🏆";
+                document.getElementById("game-item-box").style.background = "#01b574";
+                document.getElementById("game-item-box").style.color = "white";
+                buttonsEl.style.display = "none";
+                feedbackEl.textContent = "لقد أكملت التحدي بنجاح وجاوبت على جميع الأسئلة!";
+                feedbackEl.style.color = "#01b574";
+                triggerConfetti();
+            }
+        }
+
+        function playGame(choice) {
+            if(choice === questions[currentQ].answer) {
+                feedbackEl.innerHTML = "✅ إجابة صحيحة!";
+                feedbackEl.style.color = "#01b574";
+                score++;
+                scoreEl.textContent = score;
+                currentQ++;
+                setTimeout(loadQ, 1200);
+            } else {
+                feedbackEl.innerHTML = "❌ خطأ، حاول مرة أخرى!";
+                feedbackEl.style.color = "#ff8d72";
+                document.getElementById("game-item-box").style.transform = "translateX(-15px)";
+                setTimeout(() => document.getElementById("game-item-box").style.transform = "translateX(15px)", 100);
+                setTimeout(() => document.getElementById("game-item-box").style.transform = "translateX(0)", 200);
+            }
+        }
+    </script>
+</body>
+</html>
